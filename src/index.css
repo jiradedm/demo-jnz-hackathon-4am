@@ -201,6 +201,13 @@
       ),
       linear-gradient(180deg, rgb(245 243 255) 0%, transparent 60%);
   }
+  /* ลายตารางเบาแบบ template สไลด์ */
+  .slide-bg-pattern {
+    background-size: 24px 24px;
+    background-image:
+      linear-gradient(to right, rgb(124 58 237 / 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(124 58 237 / 0.04) 1px, transparent 1px);
+  }
   .slide-bg-closing {
     background:
       radial-gradient(
