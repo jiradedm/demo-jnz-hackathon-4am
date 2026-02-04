@@ -184,10 +184,10 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-slate-100 dark:bg-[var(--color-dark-bg)]">
-      {/* Header */}
-      <header className="flex-shrink-0 flex items-center justify-between px-4 py-3 glass-card border-b border-slate-200 dark:border-slate-700">
+      {/* Header — shadcn-style */}
+      <header className="flex-shrink-0 flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-winitch-600 to-winitch-800 flex items-center justify-center text-white font-bold text-lg shadow-md">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-winitch-600 to-winitch-800 flex items-center justify-center text-white font-bold text-lg shadow-sm">
             W
           </div>
           <div>
@@ -205,7 +205,7 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
             aria-label="Slide ก่อนหน้า"
             onClick={() => swiperRef.current?.slidePrev()}
             disabled={activeIndex === 0}
-            className="p-2 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none transition"
+            className="inline-flex items-center justify-center rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none transition-colors"
           >
             <svg
               className="w-5 h-5"
@@ -226,7 +226,7 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
             aria-label="Slide ถัดไป"
             onClick={() => swiperRef.current?.slideNext()}
             disabled={activeIndex === MOCK_PITCH_DECK.length - 1}
-            className="p-2 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none transition"
+            className="inline-flex items-center justify-center rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none transition-colors"
           >
             <svg
               className="w-5 h-5"
@@ -246,7 +246,7 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
             <button
               type="button"
               onClick={onClose}
-              className="ml-2 px-4 py-2 rounded-lg font-medium border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              className="inline-flex items-center justify-center rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
             >
               ปิด
             </button>
@@ -259,7 +259,7 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
         {/* Deck + pagination */}
         <div className="flex-1 flex flex-col min-w-0">
           <div className="flex-1 flex items-center justify-center p-4 min-h-0">
-            <div className="w-full max-w-4xl aspect-video bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div className="w-full max-w-4xl aspect-video bg-white dark:bg-slate-900 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
               <Swiper
                 modules={[Pagination, Keyboard]}
                 spaceBetween={0}
@@ -282,7 +282,7 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
               </Swiper>
             </div>
           </div>
-          <div className="flex-shrink-0 px-4 py-2 flex flex-wrap justify-center gap-1.5 border-t border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50">
+          <div className="flex-shrink-0 px-4 py-2 flex flex-wrap justify-center gap-1.5 border-t border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/80">
             {MOCK_PITCH_DECK.map((_, i) => (
               <button
                 key={i}
@@ -293,10 +293,10 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
                   e.dataTransfer.effectAllowed = 'copy'
                 }}
                 onClick={() => swiperRef.current?.slideTo(i)}
-                className={`w-8 h-8 rounded-lg text-sm font-medium transition cursor-grab active:cursor-grabbing ${
+                className={`inline-flex items-center justify-center w-8 h-8 rounded-md text-sm font-medium transition cursor-grab active:cursor-grabbing ${
                   i === activeIndex
-                    ? 'bg-winitch-600 text-white shadow'
-                    : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
+                    ? 'bg-winitch-600 text-white shadow-sm border border-winitch-700'
+                    : 'border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                 }`}
                 aria-label={`ไป slide ${i + 1} — ลากไปวางในแชทเป็น context ได้`}
                 aria-current={i === activeIndex ? 'true' : undefined}

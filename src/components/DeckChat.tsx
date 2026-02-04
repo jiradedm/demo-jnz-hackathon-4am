@@ -142,12 +142,12 @@ export function DeckChat({ totalSlides }: DeckChatProps) {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      {/* Chat header */}
-      <div className="flex-shrink-0 flex items-center gap-2 px-4 py-3 border-b border-slate-200 dark:border-slate-700">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-winitch-600 to-winitch-800 flex items-center justify-center text-white text-sm font-bold">
+      {/* Chat header — shadcn-style */}
+      <div className="flex-shrink-0 flex items-center gap-2 px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+        <div className="w-8 h-8 rounded-md bg-gradient-to-br from-winitch-600 to-winitch-800 flex items-center justify-center text-white text-sm font-bold shadow-sm">
           W
         </div>
-        <span className="font-thai font-medium text-slate-800 dark:text-slate-200">
+        <span className="font-thai font-medium text-sm text-slate-800 dark:text-slate-200">
           AI Assistant
         </span>
       </div>
@@ -170,12 +170,12 @@ export function DeckChat({ totalSlides }: DeckChatProps) {
             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
+              className={`max-w-[85%] rounded-lg px-4 py-2.5 border ${
                 msg.role === 'user'
-                  ? 'bg-winitch-600 text-white'
+                  ? 'bg-winitch-600 text-white border-winitch-700'
                   : msg.isThinking
-                    ? 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-600'
-                    : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shadow-sm'
+                    ? 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-600'
+                    : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700 shadow-sm'
               }`}
             >
               {msg.isThinking && (
@@ -199,7 +199,7 @@ export function DeckChat({ totalSlides }: DeckChatProps) {
           {contextSlideIndices.map((i) => (
             <span
               key={i}
-              className="inline-flex items-center gap-1.5 rounded-full bg-winitch-100 dark:bg-winitch-900/50 text-winitch-700 dark:text-winitch-300 px-3 py-1 font-thai text-sm"
+              className="inline-flex items-center gap-1.5 rounded-md border border-winitch-200 dark:border-winitch-800 bg-winitch-50 dark:bg-winitch-950/50 text-winitch-700 dark:text-winitch-300 px-3 py-1 font-thai text-sm"
             >
               Slide {i + 1}
               <button
@@ -217,25 +217,25 @@ export function DeckChat({ totalSlides }: DeckChatProps) {
         </div>
       )}
 
-      {/* Input */}
+      {/* Input — shadcn-style */}
       <form
         onSubmit={handleSubmit}
-        className="flex-shrink-0 p-4 border-t border-slate-200 dark:border-slate-700"
+        className="flex-shrink-0 p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
       >
-        <div className="flex gap-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus-within:ring-2 focus-within:ring-winitch-500/50 focus-within:border-winitch-500 transition">
+        <div className="flex gap-0 rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 shadow-sm focus-within:ring-2 focus-within:ring-winitch-500/20 focus-within:border-winitch-500 transition-[box-shadow,border-color] overflow-hidden">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="พิมพ์ prompt..."
             disabled={isThinking}
-            className="flex-1 min-w-0 bg-transparent px-4 py-3 font-thai text-sm text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none disabled:opacity-60"
+            className="flex-1 min-w-0 bg-transparent px-3 py-2.5 font-thai text-sm text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none disabled:opacity-60"
             aria-label="Prompt สำหรับ AI"
           />
           <button
             type="submit"
             disabled={!input.trim() || isThinking}
-            className="flex-shrink-0 px-4 py-3 text-winitch-600 dark:text-winitch-400 hover:bg-winitch-50 dark:hover:bg-winitch-950/50 rounded-r-xl disabled:opacity-40 disabled:pointer-events-none transition font-medium text-sm"
+            className="inline-flex items-center justify-center rounded-r-md px-4 py-2.5 text-sm font-medium text-winitch-600 dark:text-winitch-400 hover:bg-winitch-50 dark:hover:bg-winitch-950/50 disabled:opacity-40 disabled:pointer-events-none transition-colors"
             aria-label="ส่ง prompt"
           >
             ส่ง

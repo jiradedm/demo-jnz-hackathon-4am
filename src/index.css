@@ -30,6 +30,7 @@
   --color-dark-bg: #0f172a;
   --color-dark-card: #1e293b;
   --color-dark-text: #f8fafc;
+}
 
   /* Spacing */
   --spacing-18: 4.5rem;
@@ -51,6 +52,32 @@
 }
 
 @layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #0f172a;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --primary: #7c3aed;
+    --primary-foreground: #ffffff;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --ring: #7c3aed;
+  }
+  .dark {
+    --background: #0f172a;
+    --foreground: #f8fafc;
+    --card: #1e293b;
+    --card-foreground: #f8fafc;
+    --primary: #a78bfa;
+    --primary-foreground: #1e293b;
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
+    --border: #334155;
+    --input: #334155;
+    --ring: #a78bfa;
+  }
   body {
     font-family: var(--font-sans);
     color: var(--color-slate-800);
@@ -66,6 +93,46 @@
 }
 
 @layer components {
+  /* shadcn-style utilities (theme-aware) */
+  .input-base {
+    @apply flex h-9 w-full rounded-md border px-3 py-2 text-sm shadow-sm transition-[border-color,box-shadow];
+    border-color: var(--input);
+    background-color: var(--background);
+  }
+  .input-base::placeholder {
+    color: var(--muted-foreground);
+  }
+  .input-base:focus {
+    @apply outline-none;
+    border-color: var(--ring);
+    box-shadow: 0 0 0 2px rgb(124 58 237 / 0.2);
+  }
+  .dark .input-base:focus {
+    box-shadow: 0 0 0 2px rgb(167 139 250 / 0.25);
+  }
+  .label-base {
+    @apply block mb-1.5 text-sm font-medium font-thai;
+    color: var(--foreground);
+  }
+  .card-base {
+    @apply rounded-xl border shadow-sm;
+    border-color: var(--border);
+    background: var(--card);
+    color: var(--card-foreground);
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-md font-medium text-sm transition-[opacity,filter] disabled:pointer-events-none disabled:opacity-60;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    padding: 0.5rem 1rem;
+  }
+  .btn-primary:hover:not(:disabled) {
+    filter: brightness(1.05);
+  }
+  .btn-primary:focus-visible {
+    @apply outline-none;
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+  }
   .glass-card {
     background: rgb(255 255 255 / 0.7);
     backdrop-filter: blur(12px);
