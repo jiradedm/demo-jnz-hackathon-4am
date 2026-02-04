@@ -18,3 +18,6 @@ dist
 # IDE
 .idea
 .vscode
+
+# Docs (internal; not for deploy)
+_docs
