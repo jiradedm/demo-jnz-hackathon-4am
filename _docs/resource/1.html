@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winitch - The Winning Intelligence Engine by Jenosize</title>
+    
+    <!-- Fonts: Inter (EN) & Prompt (TH) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script>
+
+    <!-- Config for Custom Colors -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Prompt', 'sans-serif'],
+                        thai: ['Prompt', 'sans-serif'],
+                    },
+                    colors: {
+                        winitch: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6', // Brand Primary
+                            600: '#7c3aed',
+                            700: '#6d28d9', // Brand Deep
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                            950: '#2e1065',
+                        },
+                        victory: {
+                            400: '#34d399', // Green Accent
+                            500: '#10b981',
+                        },
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            text: '#f8fafc'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4c1d95; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6d28d9; 
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, #7c3aed, #34d399);
+        }
+
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(124, 58, 237, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(124, 58, 237, 0.05) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="font-sans text-slate-800 bg-slate-50 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-card transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-winitch-600 to-winitch-800 flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-winitch-500/30">
+                        W
+                    </div>
+                    <span class="font-bold text-2xl tracking-tight dark:text-white">Winitch</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-sm font-medium hover:text-winitch-600 dark:hover:text-winitch-400 transition-colors">Features</a>
+                    <a href="#process" class="text-sm font-medium hover:text-winitch-600 dark:hover:text-winitch-400 transition-colors">How it Works</a>
+                    <a href="#tech" class="text-sm font-medium hover:text-winitch-600 dark:hover:text-winitch-400 transition-colors">Technology</a>
+                    
+                    <!-- Dark Mode Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors focus:outline-none">
+                        <i data-lucide="moon" class="w-5 h-5 hidden dark:block text-slate-200"></i>
+                        <i data-lucide="sun" class="w-5 h-5 block dark:hidden text-slate-600"></i>
+                    </button>
+
+                    <a href="#" class="px-5 py-2.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold text-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        Request Demo
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <button id="theme-toggle-mobile" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        <i data-lucide="moon" class="w-5 h-5 hidden dark:block text-slate-200"></i>
+                        <i data-lucide="sun" class="w-5 h-5 block dark:hidden text-slate-600"></i>
+                    </button>
+                    <button class="text-slate-600 dark:text-slate-200 focus:outline-none">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden grid-bg">
+        <!-- Background Elements -->
+        <div class="absolute top-0 right-0 -translate-y-12 translate-x-1/4 w-96 h-96 bg-winitch-500/20 rounded-full blur-3xl dark:bg-winitch-600/20"></div>
+        <div class="absolute bottom-0 left-0 translate-y-12 -translate-x-1/4 w-96 h-96 bg-victory-400/20 rounded-full blur-3xl dark:bg-victory-500/10"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-winitch-50/80 dark:bg-winitch-900/30 border border-winitch-200 dark:border-winitch-800 mb-8 backdrop-blur-sm animate-float">
+                <span class="flex h-2 w-2 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-victory-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-victory-500"></span>
+                </span>
+                <span class="text-sm font-semibold text-winitch-700 dark:text-winitch-300">Powered by Agentic AI</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+                Decode the <span class="text-slate-900 dark:text-white relative inline-block">TOR
+                    <svg class="absolute w-full h-3 -bottom-1 left-0 text-victory-400 opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">
+                        <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="8" fill="none" />
+                    </svg>
+                </span>. <br>
+                Design the <span class="gradient-text">Win.</span>
+            </h1>
+
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-600 dark:text-slate-300 font-thai font-light">
+                เปลี่ยนเอกสาร TOR ที่ซับซ้อน ให้เป็นกลยุทธ์ผู้ชนะด้วย AI อัจฉริยะ <br>
+                ลดเวลาทำงาน 4 ชั่วโมงเหลือเพียง <span class="font-bold text-winitch-600 dark:text-winitch-400">5 นาที</span>
+            </p>
+
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#" class="px-8 py-4 rounded-full bg-gradient-to-r from-winitch-600 to-winitch-800 text-white font-bold text-lg shadow-lg shadow-winitch-500/40 hover:shadow-winitch-500/60 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2">
+                    Start Winning Free
+                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </a>
+                <a href="#features" class="px-8 py-4 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-white border border-slate-200 dark:border-slate-700 font-semibold text-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300">
+                    See How It Works
+                </a>
+            </div>
+
+            <!-- UI Mockup / Visual -->
+            <div class="mt-20 relative max-w-5xl mx-auto">
+                <div class="absolute -inset-1 bg-gradient-to-r from-winitch-500 via-victory-400 to-winitch-500 rounded-2xl blur opacity-30 animate-pulse-slow"></div>
+                <div class="relative rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden aspect-[16/9] md:aspect-[21/9] flex flex-col">
+                    <!-- Fake Browser Header -->
+                    <div class="h-10 bg-slate-800 border-b border-slate-700 flex items-center px-4 gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <div class="ml-4 px-3 py-1 bg-slate-900 rounded-md text-xs text-slate-400 font-mono">winitch.ai/project/new-tor</div>
+                    </div>
+                    <!-- UI Content -->
+                    <div class="flex-1 p-6 grid grid-cols-12 gap-6 font-thai">
+                        <!-- Left Panel: TOR Input -->
+                        <div class="col-span-4 bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
+                            <div class="flex items-center gap-2 mb-3 text-slate-400 text-xs uppercase tracking-wider font-semibold">
+                                <i data-lucide="file-text" class="w-4 h-4"></i> Source TOR
+                            </div>
+                            <div class="space-y-2">
+                                <div class="h-2 w-3/4 bg-slate-700 rounded animate-pulse"></div>
+                                <div class="h-2 w-full bg-slate-700 rounded animate-pulse"></div>
+                                <div class="h-2 w-5/6 bg-slate-700 rounded animate-pulse"></div>
+                                <div class="h-2 w-4/6 bg-slate-700 rounded animate-pulse"></div>
+                            </div>
+                            <div class="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-xs">
+                                <span class="font-bold">Pain Point Detected:</span> "ระบบเดิมล่าช้า ขาดการเชื่อมต่อ API"
+                            </div>
+                        </div>
+                        
+                        <!-- Middle: Processing -->
+                        <div class="col-span-1 flex items-center justify-center">
+                            <i data-lucide="arrow-right" class="w-6 h-6 text-winitch-400 animate-pulse"></i>
+                        </div>
+
+                        <!-- Right Panel: Output -->
+                        <div class="col-span-7 bg-slate-800/50 rounded-lg p-4 border border-winitch-500/30 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-2">
+                                <span class="text-[10px] bg-victory-500/20 text-victory-400 px-2 py-1 rounded-full border border-victory-500/20">Win Probability: 94%</span>
+                            </div>
+                            <div class="flex items-center gap-2 mb-4 text-winitch-400 text-xs uppercase tracking-wider font-semibold">
+                                <i data-lucide="sparkles" class="w-4 h-4"></i> AI Strategic Output
+                            </div>
+                            <h3 class="text-white text-lg font-bold mb-2">ข้อเสนอกลยุทธ์: Seamless Integration Hub</h3>
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <div class="h-20 bg-slate-700/50 rounded border border-slate-600/50 flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div class="text-2xl font-bold text-white">5x</div>
+                                        <div class="text-[10px] text-slate-400">Faster Speed</div>
+                                    </div>
+                                </div>
+                                <div class="h-20 bg-slate-700/50 rounded border border-slate-600/50 flex items-center justify-center">
+                                     <div class="text-center">
+                                        <i data-lucide="bar-chart-2" class="w-6 h-6 text-victory-400 mx-auto mb-1"></i>
+                                        <div class="text-[10px] text-slate-400">Recommended Chart</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="w-full py-2 bg-winitch-600 rounded text-xs text-white font-bold hover:bg-winitch-500 transition-colors">Generate Slide Deck</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-white dark:bg-slate-900 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-base text-winitch-600 dark:text-winitch-400 font-semibold tracking-wide uppercase">Why Winitch?</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl font-thai">
+                    มากกว่าแค่เครื่องมือ... คือ Strategic Partner
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-slate-500 dark:text-slate-400 mx-auto font-thai font-light">
+                    ผสาน 3 พลังอัจฉริยะเพื่อการปิดการขายที่แม่นยำที่สุด
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="group relative p-8 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:border-winitch-500 dark:hover:border-winitch-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-winitch-100 dark:bg-winitch-900 rounded-full opacity-50 blur-2xl group-hover:bg-winitch-200 dark:group-hover:bg-winitch-800 transition-colors"></div>
+                    <div class="w-12 h-12 bg-white dark:bg-slate-700 rounded-xl shadow-sm flex items-center justify-center mb-6 text-winitch-600 dark:text-winitch-400">
+                        <i data-lucide="scan-search" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 font-thai">TOR Insight Extractor</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-thai mb-4">
+                        แกะรอยความต้องการที่ซ่อนอยู่ ไม่ใช่แค่อ่าน Text แต่ Winitch ทำหน้าที่เป็น "นักวิเคราะห์ส่วนตัว"
+                    </p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-victory-500 shrink-0"></i>
+                            <span><strong class="text-slate-700 dark:text-slate-200">Pain Point Mapper:</strong> หาปัญหาและ Winning Criteria</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-victory-500 shrink-0"></i>
+                            <span><strong class="text-slate-700 dark:text-slate-200">Tone Analyzer:</strong> วิเคราะห์บุคลิกองค์กรลูกค้า</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="group relative p-8 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:border-victory-500 dark:hover:border-victory-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-victory-100 dark:bg-victory-900 rounded-full opacity-50 blur-2xl group-hover:bg-victory-200 dark:group-hover:bg-victory-800 transition-colors"></div>
+                    <div class="w-12 h-12 bg-white dark:bg-slate-700 rounded-xl shadow-sm flex items-center justify-center mb-6 text-victory-500">
+                        <i data-lucide="layout-template" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 font-thai">AI Content Architect</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-thai mb-4">
+                        ผู้ช่วยวางโครงเรื่อง เปลี่ยนความว่างเปล่าให้เป็นโครงสร้างสไลด์ที่ "ขายได้จริง"
+                    </p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-victory-500 shrink-0"></i>
+                            <span><strong class="text-slate-700 dark:text-slate-200">Storyline Sequencing:</strong> เรียงลำดับตามจิตวิทยา Pitching</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-victory-500 shrink-0"></i>
+                            <span><strong class="text-slate-700 dark:text-slate-200">Ghostwriting:</strong> ร่าง Headline และ Bullet Points ให้อัตโนมัติ</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="group relative p-8 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-blue-100 dark:bg-blue-900 rounded-full opacity-50 blur-2xl group-hover:bg-blue-200 dark:group-hover:bg-blue-800 transition-colors"></div>
+                    <div class="w-12 h-12 bg-white dark:bg-slate-700 rounded-xl shadow-sm flex items-center justify-center mb-6 text-blue-500">
+                        <i data-lucide="zap" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 font-thai">Context Awareness Core</h3>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-thai mb-4">
+                        เทคโนโลยีเบื้องหลังชัยชนะ ไม่ใช่แค่อาจารย์ภาษาไทย แต่คือ Partner ทางธุรกิจ
+                    </p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-victory-500 shrink-0"></i>
+                            <span>เข้าใจบริบทธุรกิจและ "จุดตัดสินใจซื้อ" (Decision Point)</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
+                            <i data-lucide="clock" class="w-4 h-4 text-victory-500 shrink-0"></i>
+                            <span><strong class="text-slate-700 dark:text-slate-200">Extreme Velocity:</strong> ทำ Outline เสร็จใน 5 นาที (จาก 4 ชม.)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="py-20 bg-slate-50 dark:bg-slate-800/50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                <div class="grid md:grid-cols-2">
+                    <div class="p-10 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-3 mb-6 opacity-50 grayscale">
+                            <i data-lucide="user" class="w-8 h-8"></i>
+                            <h3 class="text-xl font-bold font-thai">วิธีแบบเดิม (Human Only)</h3>
+                        </div>
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-3 text-slate-500 font-thai">
+                                <i data-lucide="x" class="w-5 h-5 text-red-400"></i>
+                                อ่าน TOR วนไปมา 3-4 ชั่วโมง
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-500 font-thai">
+                                <i data-lucide="x" class="w-5 h-5 text-red-400"></i>
+                                ตีความผิด จับประเด็นไม่ครบ ตกหล่น
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-500 font-thai">
+                                <i data-lucide="x" class="w-5 h-5 text-red-400"></i>
+                                สไลด์สวยแต่เนื้อหา "ไม่โดนใจ"
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="p-10 bg-slate-50/50 dark:bg-winitch-900/10 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-winitch-500 to-victory-400 opacity-10 blur-3xl rounded-full"></div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-8 h-8 rounded bg-gradient-to-r from-winitch-600 to-winitch-800 flex items-center justify-center text-white font-bold text-sm">W</div>
+                            <h3 class="text-xl font-bold font-thai text-slate-900 dark:text-white">Winitch (Human + AI)</h3>
+                        </div>
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300 font-thai font-medium">
+                                <i data-lucide="check" class="w-5 h-5 text-victory-500"></i>
+                                สแกน TOR และสกัด Insight ใน <span class="text-winitch-600 dark:text-winitch-400 font-bold">วินาที</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300 font-thai font-medium">
+                                <i data-lucide="check" class="w-5 h-5 text-victory-500"></i>
+                                Checklist แม่นยำ 100% ป้องกันการตกหล่น
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300 font-thai font-medium">
+                                <i data-lucide="check" class="w-5 h-5 text-victory-500"></i>
+                                โครงสร้างสไลด์ออกแบบมาเพื่อ <span class="text-victory-500 font-bold">ชนะใจกรรมการ</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-slate-900"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-winitch-900 to-slate-900 opacity-90"></div>
+        <!-- Animated Grid Background -->
+        <div class="absolute inset-0" style="background-image: radial-gradient(#4c1d95 1px, transparent 1px); background-size: 30px 30px; opacity: 0.2;"></div>
+
+        <div class="max-w-4xl mx-auto px-4 relative z-10 text-center">
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 font-thai">พร้อมเปลี่ยนเกมการประมูลหรือยัง?</h2>
+            <p class="text-xl text-slate-300 mb-10 font-light font-thai">
+                ลองใช้ Winitch วันนี้ แล้วคุณจะลืมการทำ Pitch Deck แบบเดิมไปตลอดกาล
+            </p>
+            <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+                <input type="email" placeholder="Enter your work email" class="flex-1 px-5 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-victory-500 backdrop-blur-sm">
+                <button type="button" class="px-8 py-4 rounded-full bg-victory-500 hover:bg-victory-400 text-slate-900 font-bold shadow-lg shadow-victory-500/30 transition-all duration-300 transform hover:scale-105">
+                    Get Early Access
+                </button>
+            </form>
+            <p class="mt-4 text-xs text-slate-500">No credit card required. Free for first 3 projects.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-950 pt-16 pb-8 border-t border-slate-100 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-winitch-600 to-winitch-800 flex items-center justify-center text-white font-bold text-lg">W</div>
+                        <span class="font-bold text-xl text-slate-900 dark:text-white">Winitch</span>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm font-thai">
+                        The Winning Intelligence Engine.<br>
+                        Powered by Jenosize.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-4">Product</h4>
+                    <ul class="space-y-2 text-sm text-slate-500 dark:text-slate-400">
+                        <li><a href="#" class="hover:text-winitch-600 transition-colors">Features</a></li>
+                        <li><a href="#" class="hover:text-winitch-600 transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-winitch-600 transition-colors">Integration</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-slate-500 dark:text-slate-400">
+                        <li><a href="#" class="hover:text-winitch-600 transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-winitch-600 transition-colors">Case Studies</a></li>
+                        <li><a href="#" class="hover:text-winitch-600 transition-colors">Pitching Guide</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-4">Contact</h4>
+                    <ul class="space-y-2 text-sm text-slate-500 dark:text-slate-400">
+                        <li>hello@winitch.ai</li>
+                        <li>+66 2 123 4567</li>
+                        <li>Bangkok, Thailand</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-100 dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-slate-400">© 2025 Winitch by Jenosize. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="text-slate-400 hover:text-winitch-600"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-winitch-600"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-winitch-600"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Dark Mode Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleMobileBtn = document.getElementById('theme-toggle-mobile');
+        
+        // Check local storage or system preference
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        themeToggleMobileBtn.addEventListener('click', toggleTheme);
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-lg');
+                navbar.classList.add('bg-white/90');
+                if(document.documentElement.classList.contains('dark')) {
+                     navbar.classList.add('dark:bg-slate-900/90');
+                }
+            } else {
+                navbar.classList.remove('shadow-lg');
+                navbar.classList.remove('bg-white/90');
+                navbar.classList.remove('dark:bg-slate-900/90');
+            }
+        });
+    </script>
+</body>
+</html>

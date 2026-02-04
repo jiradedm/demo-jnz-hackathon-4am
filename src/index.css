@@ -1,0 +1,148 @@
+@import 'tailwindcss';
+
+/* Dark mode แบบ class (ใส่ class="dark" ที่ html) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Winitch brand — config อย่างเดียวใน CSS (Tailwind v4 @theme) */
+@theme {
+  /* Fonts: Inter (EN), Prompt (TH) */
+  --font-sans: 'Inter', 'Prompt', ui-sans-serif, system-ui, sans-serif;
+  --font-thai: 'Prompt', ui-sans-serif, sans-serif;
+
+  /* Winitch palette */
+  --color-winitch-50: #f5f3ff;
+  --color-winitch-100: #ede9fe;
+  --color-winitch-200: #ddd6fe;
+  --color-winitch-300: #c4b5fd;
+  --color-winitch-400: #a78bfa;
+  --color-winitch-500: #8b5cf6;
+  --color-winitch-600: #7c3aed;
+  --color-winitch-700: #6d28d9;
+  --color-winitch-800: #5b21b6;
+  --color-winitch-900: #4c1d95;
+  --color-winitch-950: #2e1065;
+
+  /* Victory (accent) */
+  --color-victory-400: #34d399;
+  --color-victory-500: #10b981;
+
+  /* Dark theme */
+  --color-dark-bg: #0f172a;
+  --color-dark-card: #1e293b;
+  --color-dark-text: #f8fafc;
+
+  /* Spacing */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-30: 7.5rem;
+
+  /* Animation */
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-slate-800);
+    background-color: var(--color-slate-50);
+    transition:
+      color 0.3s,
+      background-color 0.3s;
+  }
+  .dark body {
+    color: var(--color-dark-text);
+    background-color: var(--color-dark-bg);
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: rgb(255 255 255 / 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgb(255 255 255 / 0.3);
+  }
+  .dark .glass-card {
+    background: rgb(30 41 59 / 0.7);
+    border-color: rgb(255 255 255 / 0.05);
+  }
+  .gradient-text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(
+      to right,
+      var(--color-winitch-600),
+      var(--color-victory-400)
+    );
+  }
+  .grid-bg {
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgb(124 58 237 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(124 58 237 / 0.05) 1px, transparent 1px);
+  }
+  .slide-bg-title {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgb(139 92 246 / 0.12), transparent),
+      linear-gradient(180deg, rgb(245 243 255) 0%, transparent 60%);
+  }
+  .slide-bg-closing {
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgb(124 58 237 / 0.15), transparent),
+      linear-gradient(180deg, transparent 0%, rgb(245 243 255 / 0.8) 100%);
+  }
+  .dark .slide-bg-closing {
+    opacity: 0.4;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-slate-200);
+}
+.dark ::-webkit-scrollbar-track {
+  background: var(--color-dark-card);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-winitch-900);
+  border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-winitch-700);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-winitch-700);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-winitch-600);
+}
+
+/* Swiper pagination — Winitch brand */
+.swiper-pagination-bullet {
+  background: var(--color-slate-300);
+  opacity: 1;
+}
+.swiper-pagination-bullet-active {
+  background: var(--color-winitch-600);
+  transform: scale(1.2);
+}
+.dark .swiper-pagination-bullet {
+  background: var(--color-slate-600);
+}
+.dark .swiper-pagination-bullet-active {
+  background: var(--color-winitch-400);
+}
