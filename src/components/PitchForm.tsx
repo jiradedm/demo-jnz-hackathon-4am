@@ -6,7 +6,6 @@ import {
   Sparkles,
   AlertCircle,
   ChevronRight,
-  Save,
   PieChart,
   Target,
   DollarSign,
@@ -72,15 +71,14 @@ export function PitchForm({ onDeckCreated }: PitchFormProps) {
   const [isAnalyzed, setIsAnalyzed] = useState(false)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [form, setForm] = useState<FormState>(initialForm)
-  const [presentationMinutes, setPresentationMinutes] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showGenerating, setShowGenerating] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isDragOver, setIsDragOver] = useState(false)
   /** ฟิลด์ที่ผู้ใช้แก้แล้ว (ไม่แสดง tag AI Generated) */
-  const [userEditedFields, setUserEditedFields] = useState<Set<keyof FormState>>(
-    () => new Set()
-  )
+  const [userEditedFields, setUserEditedFields] = useState<
+    Set<keyof FormState>
+  >(() => new Set())
 
   const showAITag = (field: keyof FormState) =>
     isAnalyzed && !userEditedFields.has(field)
@@ -623,14 +621,6 @@ export function PitchForm({ onDeckCreated }: PitchFormProps) {
               )}
 
               <div className="flex flex-wrap items-center justify-end gap-3 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  disabled={isSubmitting}
-                  className="font-thai"
-                >
-                  <Save className="w-4 h-4" /> Save Draft
-                </Button>
                 <Button
                   type="submit"
                   disabled={isSubmitting || !isAnalyzed}
