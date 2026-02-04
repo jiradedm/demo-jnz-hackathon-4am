@@ -6,6 +6,9 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import { MOCK_PITCH_DECK, type MockSlideContent } from '../libs/mockDeck'
 import { DeckChat } from './DeckChat'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 
 /** Render เนื้อหาตาม layout ของแต่ละ slide */
 function SlideContent({ slide }: { slide: MockSlideContent }) {
@@ -184,72 +187,50 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-slate-100 dark:bg-[var(--color-dark-bg)]">
-      {/* Header — shadcn-style */}
-      <header className="flex-shrink-0 flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 shadow-sm">
+      {/* Header — shadcn Button */}
+      <header className="flex-shrink-0 flex items-center justify-between px-4 py-3 border-b border-border bg-card">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-winitch-600 to-winitch-800 flex items-center justify-center text-white font-bold text-lg shadow-sm">
+          <div className="size-10 rounded-lg bg-gradient-to-br from-winitch-600 to-winitch-800 flex items-center justify-center text-white font-bold text-lg shadow-sm">
             W
           </div>
           <div>
-            <h1 className="font-thai font-bold text-lg text-slate-900 dark:text-white">
-              Pitch Deck
+            <h1 className="font-thai font-bold text-lg text-foreground">
+              Winitch
             </h1>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-muted-foreground">
               Slide {activeIndex + 1} / {MOCK_PITCH_DECK.length}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="icon"
             aria-label="Slide ก่อนหน้า"
             onClick={() => swiperRef.current?.slidePrev()}
             disabled={activeIndex === 0}
-            className="inline-flex items-center justify-center rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none transition-colors"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
+            <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="outline"
+            size="icon"
             aria-label="Slide ถัดไป"
             onClick={() => swiperRef.current?.slideNext()}
             disabled={activeIndex === MOCK_PITCH_DECK.length - 1}
-            className="inline-flex items-center justify-center rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none transition-colors"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
+            <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-          </button>
+          </Button>
           {onClose && (
-            <button
-              type="button"
-              onClick={onClose}
-              className="inline-flex items-center justify-center rounded-md border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
-            >
+            <Button type="button" variant="outline" onClick={onClose} className="font-thai">
               ปิด
-            </button>
+            </Button>
           )}
         </div>
       </header>
@@ -259,7 +240,7 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
         {/* Deck + pagination */}
         <div className="flex-1 flex flex-col min-w-0">
           <div className="flex-1 flex items-center justify-center p-4 min-h-0">
-            <div className="w-full max-w-4xl aspect-video bg-white dark:bg-slate-900 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <Card className="w-full max-w-4xl aspect-video overflow-hidden shadow-lg">
               <Swiper
                 modules={[Pagination, Keyboard]}
                 spaceBetween={0}
@@ -274,35 +255,36 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
               >
                 {MOCK_PITCH_DECK.map((slide) => (
                   <SwiperSlide key={slide.id}>
-                    <div className="h-full w-full flex items-center justify-center bg-white dark:bg-slate-900">
+                    <div className="h-full w-full flex items-center justify-center bg-card">
                       <SlideContent slide={slide} />
                     </div>
                   </SwiperSlide>
                 ))}
               </Swiper>
-            </div>
+            </Card>
           </div>
-          <div className="flex-shrink-0 px-4 py-2 flex flex-wrap justify-center gap-1.5 border-t border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/80">
+          <div className="flex-shrink-0 px-4 py-2 flex flex-wrap justify-center gap-1.5 border-t border-border bg-muted/50">
             {MOCK_PITCH_DECK.map((_, i) => (
-              <button
+              <Button
                 key={i}
                 type="button"
+                variant={i === activeIndex ? 'default' : 'outline'}
+                size="icon"
                 draggable
                 onDragStart={(e) => {
                   e.dataTransfer.setData('application/x-deck-slide', String(i))
                   e.dataTransfer.effectAllowed = 'copy'
                 }}
                 onClick={() => swiperRef.current?.slideTo(i)}
-                className={`inline-flex items-center justify-center w-8 h-8 rounded-md text-sm font-medium transition cursor-grab active:cursor-grabbing ${
-                  i === activeIndex
-                    ? 'bg-winitch-600 text-white shadow-sm border border-winitch-700'
-                    : 'border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
-                }`}
+                className={cn(
+                  'size-8 cursor-grab active:cursor-grabbing',
+                  i === activeIndex && 'bg-primary text-primary-foreground'
+                )}
                 aria-label={`ไป slide ${i + 1} — ลากไปวางในแชทเป็น context ได้`}
                 aria-current={i === activeIndex ? 'true' : undefined}
               >
                 {i + 1}
-              </button>
+              </Button>
             ))}
           </div>
         </div>

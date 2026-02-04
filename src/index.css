@@ -30,7 +30,26 @@
   --color-dark-bg: #0f172a;
   --color-dark-card: #1e293b;
   --color-dark-text: #f8fafc;
-}
+
+  /* shadcn semantic (refs from :root/.dark) */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
 
   /* Spacing */
   --spacing-18: 4.5rem;
@@ -61,6 +80,12 @@
     --primary-foreground: #ffffff;
     --muted: #f1f5f9;
     --muted-foreground: #64748b;
+    --accent: #f1f5f9;
+    --accent-foreground: #0f172a;
+    --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
+    --secondary: #f1f5f9;
+    --secondary-foreground: #0f172a;
     --border: #e2e8f0;
     --input: #e2e8f0;
     --ring: #7c3aed;
@@ -74,6 +99,12 @@
     --primary-foreground: #1e293b;
     --muted: #1e293b;
     --muted-foreground: #94a3b8;
+    --accent: #334155;
+    --accent-foreground: #f8fafc;
+    --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
+    --secondary: #334155;
+    --secondary-foreground: #f8fafc;
     --border: #334155;
     --input: #334155;
     --ring: #a78bfa;
@@ -131,7 +162,9 @@
   }
   .btn-primary:focus-visible {
     @apply outline-none;
-    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 0 4px var(--ring);
   }
   .glass-card {
     background: rgb(255 255 255 / 0.7);
@@ -161,12 +194,20 @@
   }
   .slide-bg-title {
     background:
-      radial-gradient(ellipse 80% 60% at 50% 40%, rgb(139 92 246 / 0.12), transparent),
+      radial-gradient(
+        ellipse 80% 60% at 50% 40%,
+        rgb(139 92 246 / 0.12),
+        transparent
+      ),
       linear-gradient(180deg, rgb(245 243 255) 0%, transparent 60%);
   }
   .slide-bg-closing {
     background:
-      radial-gradient(ellipse 70% 50% at 50% 50%, rgb(124 58 237 / 0.15), transparent),
+      radial-gradient(
+        ellipse 70% 50% at 50% 50%,
+        rgb(124 58 237 / 0.15),
+        transparent
+      ),
       linear-gradient(180deg, transparent 0%, rgb(245 243 255 / 0.8) 100%);
   }
   .dark .slide-bg-closing {
@@ -185,17 +226,17 @@
   background: var(--color-dark-card);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-winitch-900);
+  background: var(--color-winitch-500);
   border-radius: 4px;
 }
 .dark ::-webkit-scrollbar-thumb {
-  background: var(--color-winitch-700);
+  background: var(--color-winitch-400);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-winitch-700);
+  background: var(--color-winitch-400);
 }
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-winitch-600);
+  background: var(--color-winitch-400);
 }
 
 /* Swiper pagination — Winitch brand */
