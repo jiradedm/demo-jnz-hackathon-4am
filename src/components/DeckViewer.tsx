@@ -5,6 +5,7 @@ import type { Swiper as SwiperType } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import { MOCK_PITCH_DECK, type MockSlideContent } from '../libs/mockDeck'
+import { DeckChat } from './DeckChat'
 
 /** Render เนื้อหาตาม layout ของแต่ละ slide */
 function SlideContent({ slide }: { slide: MockSlideContent }) {
@@ -253,50 +254,62 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
         </div>
       </header>
 
-      {/* Slide area — aspect ratio คล้าย presentation */}
-      <div className="flex-1 flex items-center justify-center p-4 min-h-0">
-        <div className="w-full max-w-4xl aspect-video bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <Swiper
-            modules={[Pagination, Keyboard]}
-            spaceBetween={0}
-            slidesPerView={1}
-            onSwiper={(swiper) => {
-              swiperRef.current = swiper
-            }}
-            onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
-            keyboard={{ enabled: true }}
-            pagination={{ clickable: true }}
-            className="h-full w-full [--swiper-pagination-bottom:0.75rem]"
-          >
-            {MOCK_PITCH_DECK.map((slide) => (
-              <SwiperSlide key={slide.id}>
-                <div className="h-full w-full flex items-center justify-center bg-white dark:bg-slate-900">
-                  <SlideContent slide={slide} />
-                </div>
-              </SwiperSlide>
+      {/* Main: Deck (ซ้าย) + Chat (ขวา) แบบ Cursor */}
+      <div className="flex-1 flex min-h-0">
+        {/* Deck + pagination */}
+        <div className="flex-1 flex flex-col min-w-0">
+          <div className="flex-1 flex items-center justify-center p-4 min-h-0">
+            <div className="w-full max-w-4xl aspect-video bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+              <Swiper
+                modules={[Pagination, Keyboard]}
+                spaceBetween={0}
+                slidesPerView={1}
+                onSwiper={(swiper) => {
+                  swiperRef.current = swiper
+                }}
+                onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+                keyboard={{ enabled: true }}
+                pagination={{ clickable: true }}
+                className="h-full w-full [--swiper-pagination-bottom:0.75rem]"
+              >
+                {MOCK_PITCH_DECK.map((slide) => (
+                  <SwiperSlide key={slide.id}>
+                    <div className="h-full w-full flex items-center justify-center bg-white dark:bg-slate-900">
+                      <SlideContent slide={slide} />
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+          <div className="flex-shrink-0 px-4 py-2 flex flex-wrap justify-center gap-1.5 border-t border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50">
+            {MOCK_PITCH_DECK.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData('application/x-deck-slide', String(i))
+                  e.dataTransfer.effectAllowed = 'copy'
+                }}
+                onClick={() => swiperRef.current?.slideTo(i)}
+                className={`w-8 h-8 rounded-lg text-sm font-medium transition cursor-grab active:cursor-grabbing ${
+                  i === activeIndex
+                    ? 'bg-winitch-600 text-white shadow'
+                    : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
+                }`}
+                aria-label={`ไป slide ${i + 1} — ลากไปวางในแชทเป็น context ได้`}
+                aria-current={i === activeIndex ? 'true' : undefined}
+              >
+                {i + 1}
+              </button>
             ))}
-          </Swiper>
+          </div>
         </div>
-      </div>
-
-      {/* Pagination strip (slide numbers) */}
-      <div className="flex-shrink-0 px-4 py-2 flex flex-wrap justify-center gap-1.5 border-t border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50">
-        {MOCK_PITCH_DECK.map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => swiperRef.current?.slideTo(i)}
-            className={`w-8 h-8 rounded-lg text-sm font-medium transition ${
-              i === activeIndex
-                ? 'bg-winitch-600 text-white shadow'
-                : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
-            }`}
-            aria-label={`ไป slide ${i + 1}`}
-            aria-current={i === activeIndex ? 'true' : undefined}
-          >
-            {i + 1}
-          </button>
-        ))}
+        {/* Chat panel (ความกว้างคงที่) — รับ drop เลข slide เป็น context */}
+        <div className="w-[380px] flex-shrink-0 flex flex-col min-h-0 max-h-full">
+          <DeckChat totalSlides={MOCK_PITCH_DECK.length} />
+        </div>
       </div>
     </div>
   )
