@@ -9,6 +9,7 @@ import {
   PieChart,
   Target,
   DollarSign,
+  ArrowLeft,
 } from 'lucide-react'
 import type { Deck, Slide } from '../types/deck'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -40,7 +41,15 @@ const mockAIData = {
   fundingAsk: '20,000,000 THB (Seed Round)',
   useOfFunds:
     '60% พัฒนา Agentic AI Core (Deep Tech), 25% Market Expansion & B2G Partnership, 15% Operations & Team Growth',
+  template: 'standard',
 }
+
+const MOCK_TEMPLATES = [
+  { id: 'standard', name: 'Standard Pitch Deck (10 slides)' },
+  { id: 'minimal', name: 'Minimalist (Clean & Simple)' },
+  { id: 'startup', name: 'High Growth Startup (Bold)' },
+  { id: 'creative', name: 'Creative / Design Focused' },
+]
 
 const initialForm = {
   projectName: '',
@@ -54,6 +63,7 @@ const initialForm = {
   traction: '',
   fundingAsk: '',
   useOfFunds: '',
+  template: '',
 }
 
 type FormState = typeof initialForm
@@ -64,9 +74,15 @@ const hintClass = 'mt-1.5 text-xs text-muted-foreground font-thai'
 
 export interface PitchFormProps {
   onDeckCreated?: (deck: Deck) => void
+  onSaveDraft?: () => void
+  onBack?: () => void
 }
 
-export function PitchForm({ onDeckCreated }: PitchFormProps) {
+export function PitchForm({
+  onDeckCreated,
+  onSaveDraft,
+  onBack,
+}: PitchFormProps) {
   const [fileName, setFileName] = useState('')
   const [isAnalyzed, setIsAnalyzed] = useState(false)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
@@ -194,7 +210,17 @@ export function PitchForm({ onDeckCreated }: PitchFormProps) {
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <Card className="p-6 sm:p-8">
+      <Card className="p-6 sm:p-8 relative">
+        {onBack && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute left-4 top-4 sm:left-6 sm:top-6"
+            onClick={onBack}
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+        )}
         <CardHeader className="p-0 text-center mb-6">
           <div className="flex items-center justify-center gap-2 mb-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-winitch-600 to-winitch-800 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-winitch-500/30 shrink-0">
@@ -371,6 +397,41 @@ export function PitchForm({ onDeckCreated }: PitchFormProps) {
                         disabled={isSubmitting}
                         className="font-thai"
                       />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="template"
+                      className="font-thai label-base flex items-center justify-between"
+                    >
+                      Template Style
+                    </Label>
+                    <div className="relative">
+                      <select
+                        id="template"
+                        name="template"
+                        value={form.template}
+                        onChange={(e) => update('template', e.target.value)}
+                        disabled={isSubmitting}
+                        className={cn(
+                          'flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-foreground/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 font-thai appearance-none',
+                          !form.template && 'text-muted-foreground'
+                        )}
+                      >
+                        <option value="" disabled>
+                          Select a template...
+                        </option>
+                        {MOCK_TEMPLATES.map((t) => (
+                          <option
+                            key={t.id}
+                            value={t.id}
+                            className="text-foreground"
+                          >
+                            {t.name}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronRight className="absolute right-3 top-2.5 h-4 w-4 rotate-90 text-muted-foreground pointer-events-none" />
                     </div>
                   </div>
                 </div>
@@ -621,6 +682,16 @@ export function PitchForm({ onDeckCreated }: PitchFormProps) {
               )}
 
               <div className="flex flex-wrap items-center justify-end gap-3 pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={onSaveDraft}
+                  disabled={isSubmitting || !isAnalyzed}
+                  className="font-thai"
+                  size="lg"
+                >
+                  Save Draft
+                </Button>
                 <Button
                   type="submit"
                   disabled={isSubmitting || !isAnalyzed}
