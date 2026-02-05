@@ -317,8 +317,8 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
   const swiperRef = useRef<SwiperType | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [exportStatus, setExportStatus] = useState<ExportStatus>('idle')
-  const deckWinrate = 95
-  const deckAnalysis = `จากการประเมินศักยภาพล่าสุด Winitch มีโอกาสระดมทุนสำเร็จ (Win Rate) สูงถึง 95% จัดอยู่ในสถานะ "Must-Invest Deal" ที่หาได้ยากในตลาด โดยปัจจัยขับเคลื่อนหลักคือ Value Proposition ที่สร้างผลกระทบในระดับปฏิวัติวงการ (Disruptive Impact) การลดกระบวนการทำงานจาก "5 วันเหลือ 5 นาที" ถือเป็น Efficiency Leap ที่สร้าง ROI ให้นักลงทุนเห็นได้ทันที ผนวกกับเทคโนโลยี Agentic AI ที่มีความแม่นยำสูงและผ่านการ Validate ตลาดด้วย Traction จริงจากผู้นำอุตสาหกรรม ทำให้ความเสี่ยงในการลงทุนต่ำมาก
+  const deckWinScore = 95
+  const deckAnalysis = `จากการประเมินศักยภาพล่าสุด Winitch มีโอกาสระดมทุนสำเร็จ (Win Score) สูงถึง 95/100 จัดอยู่ในสถานะ "Must-Invest Deal" ที่หาได้ยากในตลาด โดยปัจจัยขับเคลื่อนหลักคือ Value Proposition ที่สร้างผลกระทบในระดับปฏิวัติวงการ (Disruptive Impact) การลดกระบวนการทำงานจาก "5 วันเหลือ 5 นาที" ถือเป็น Efficiency Leap ที่สร้าง ROI ให้นักลงทุนเห็นได้ทันที ผนวกกับเทคโนโลยี Agentic AI ที่มีความแม่นยำสูงและผ่านการ Validate ตลาดด้วย Traction จริงจากผู้นำอุตสาหกรรม ทำให้ความเสี่ยงในการลงทุนต่ำมาก
 
 จุดเด่นที่ทำให้ Winitch เหนือกว่าคู่แข่งอย่างขาดลอยคือการวางตำแหน่งเป็น Strategic Partner ที่มี Context Awareness เฉพาะทาง ซึ่งเป็นจุดที่ AI ทั่วไปเลียนแบบได้ยาก (High Barrier to Entry) ถือเป็นโปรเจกต์ที่มี Product-Market Fit สมบูรณ์แบบและพร้อมสำหรับการ Scale สู่ตลาด GovTech ระดับโลกอย่างแท้จริง`
 
@@ -353,8 +353,10 @@ export function DeckViewer({ onClose }: DeckViewerProps) {
                 className="flex items-center gap-1.5 rounded-lg border border-winitch-200 dark:border-winitch-700 bg-winitch-50 dark:bg-winitch-950/80 px-3 py-2 font-thai text-sm font-medium text-winitch-700 dark:text-winitch-300 hover:bg-winitch-100 dark:hover:bg-winitch-900/80 transition-colors"
                 title="วิเคราะห์ทั้ง deck จาก AI"
               >
-                <span className="opacity-80">Winrate</span>
-                <span className="font-bold tabular-nums">{deckWinrate}%</span>
+                <span className="opacity-80">Win Score</span>
+                <span className="font-bold tabular-nums">
+                  {deckWinScore}/100
+                </span>
               </button>
             </PopoverTrigger>
             <PopoverContent align="start" className="p-0">

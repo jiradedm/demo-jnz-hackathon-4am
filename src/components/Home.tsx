@@ -1,5 +1,5 @@
 import { useNavigate } from '@tanstack/react-router'
-import { Plus, Clock, LayoutGrid } from 'lucide-react'
+import { Plus, Clock, LayoutGrid, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
@@ -14,6 +14,7 @@ const RECENT_DECKS = [
     updatedAt: '10 mins ago',
     slideCount: 12,
     status: 'Generated',
+    winScore: 92,
     thumbnail:
       'bg-gradient-to-br from-purple-100 to-indigo-100 dark:from-purple-950/30 dark:to-indigo-950/30',
   },
@@ -24,6 +25,7 @@ const RECENT_DECKS = [
     updatedAt: '2 days ago',
     slideCount: 8,
     status: 'Generated',
+    winScore: 85,
     thumbnail:
       'bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-950/30 dark:to-cyan-950/30',
   },
@@ -34,6 +36,7 @@ const RECENT_DECKS = [
     updatedAt: '5 days ago',
     slideCount: 15,
     status: 'Generated',
+    winScore: 78,
     thumbnail:
       'bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-950/30 dark:to-teal-950/30',
   },
@@ -44,6 +47,7 @@ const RECENT_DECKS = [
     updatedAt: '1 week ago',
     slideCount: 24,
     status: 'Draft',
+    winScore: 65,
     thumbnail:
       'bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-950/30 dark:to-amber-950/30',
   },
@@ -134,6 +138,10 @@ export function Home() {
                     {deck.updatedAt}
                   </div>
                   <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 px-1.5 py-0.5 rounded flex items-center gap-1">
+                      <Trophy className="w-3 h-3" />
+                      {deck.winScore}
+                    </span>
                     <span className="text-xs font-medium text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded flex items-center gap-1">
                       <LayoutGrid className="w-3 h-3" />
                       {deck.slideCount}

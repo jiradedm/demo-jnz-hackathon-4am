@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 type MessageRole = 'user' | 'assistant'
 
@@ -36,7 +37,7 @@ export function DeckChat({ totalSlides }: DeckChatProps) {
   const [input, setInput] = useState('')
   const [isThinking, setIsThinking] = useState(false)
   const [contextSlideIndices, setContextSlideIndices] = useState<number[]>([])
-  const [isDragOver, setIsDragOver] = useState(false)
+  const [isDragOverInput, setIsDragOverInput] = useState(false)
   const listEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () =>
@@ -46,19 +47,25 @@ export function DeckChat({ totalSlides }: DeckChatProps) {
     scrollToBottom()
   }, [messages])
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleInputDragOver = (e: React.DragEvent) => {
     if (e.dataTransfer.types.includes(DRAG_TYPE_SLIDE)) {
       e.preventDefault()
       e.dataTransfer.dropEffect = 'copy'
-      setIsDragOver(true)
+      setIsDragOverInput(true)
     }
   }
 
-  const handleDragLeave = () => setIsDragOver(false)
+  const handleInputDragLeave = (e: React.DragEvent) => {
+    // Only set to false if we're actually leaving the input area
+    const relatedTarget = e.relatedTarget as HTMLElement
+    if (!relatedTarget || !e.currentTarget.contains(relatedTarget)) {
+      setIsDragOverInput(false)
+    }
+  }
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleInputDrop = (e: React.DragEvent) => {
     e.preventDefault()
-    setIsDragOver(false)
+    setIsDragOverInput(false)
     const raw = e.dataTransfer.getData(DRAG_TYPE_SLIDE)
     if (raw === '') return
     const index = parseInt(raw, 10)
@@ -137,16 +144,7 @@ export function DeckChat({ totalSlides }: DeckChatProps) {
   }
 
   return (
-    <div
-      className={`flex h-full flex-col bg-slate-50 dark:bg-slate-900/80 border-l border-slate-200 dark:border-slate-700 transition-colors ${
-        isDragOver
-          ? 'ring-2 ring-winitch-500 ring-inset bg-winitch-50/50 dark:bg-winitch-950/30'
-          : ''
-      }`}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-    >
+    <div className="flex h-full flex-col bg-slate-50 dark:bg-slate-900/80 border-l border-slate-200 dark:border-slate-700">
       {/* Chat header — shadcn */}
       <div className="flex-shrink-0 flex items-center gap-2 px-4 py-3 border-b border-border bg-card">
         <div className="size-8 rounded-md bg-gradient-to-br from-winitch-600 to-winitch-800 flex items-center justify-center text-white text-sm font-bold shadow-sm">
@@ -163,7 +161,7 @@ export function DeckChat({ totalSlides }: DeckChatProps) {
           <div className="flex flex-col items-center justify-center h-full text-center px-4">
             <p className="font-thai text-slate-500 dark:text-slate-400 text-sm">
               ส่ง prompt เกี่ยวกับ pitch deck ได้เลย หรือลากเลข slide
-              ด้านล่างมาวางเป็น context
+              ด้านล่างมาวางที่ช่อง input เป็น context
             </p>
             <p className="font-thai text-slate-400 dark:text-slate-500 text-xs mt-2">
               "สรุป slide นี้ให้หน่อย" หรือ "แนะนำวิธีปรับปรุง"
@@ -196,70 +194,83 @@ export function DeckChat({ totalSlides }: DeckChatProps) {
         <div ref={listEndRef} />
       </div>
 
-      {/* Context chips (จาก drop เลข slide) */}
-      {contextSlideIndices.length > 0 && (
-        <div className="flex-shrink-0 px-4 pb-2 flex flex-wrap gap-2">
-          <span className="font-thai text-xs text-slate-500 dark:text-slate-400 self-center">
-            Context:
-          </span>
-          {contextSlideIndices.map((i) => (
-            <span
-              key={i}
-              className="inline-flex items-center gap-1.5 rounded-md border border-winitch-200 dark:border-winitch-800 bg-winitch-50 dark:bg-winitch-950/50 text-winitch-700 dark:text-winitch-300 px-3 py-1 font-thai text-sm"
-            >
-              Slide {i + 1}
-              <button
-                type="button"
-                onClick={() => removeContextSlide(i)}
-                className="rounded-full p-0.5 hover:bg-winitch-200 dark:hover:bg-winitch-800 text-current"
-                aria-label={`เอา Slide ${i + 1} ออกจาก context`}
-              >
-                <svg
-                  className="w-3.5 h-3.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+      {/* Input area with context chips — shadcn Input + Button */}
+      <div className="flex-shrink-0 border-t border-border bg-card">
+        <form
+          onSubmit={handleSubmit}
+          onDragOver={handleInputDragOver}
+          onDragLeave={handleInputDragLeave}
+          onDrop={handleInputDrop}
+          className={cn(
+            'p-4 transition-colors',
+            isDragOverInput &&
+              'bg-winitch-50/50 dark:bg-winitch-950/30 ring-2 ring-winitch-500 ring-inset'
+          )}
+        >
+          {/* Context chips (จาก drop เลข slide) */}
+          {contextSlideIndices.length > 0 && (
+            <div className="mb-3 flex flex-wrap gap-2 items-center">
+              <span className="font-thai text-xs text-slate-500 dark:text-slate-400">
+                Context:
+              </span>
+              {contextSlideIndices.map((i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center gap-1.5 rounded-md border border-winitch-200 dark:border-winitch-800 bg-winitch-50 dark:bg-winitch-950/50 text-winitch-700 dark:text-winitch-300 px-2.5 py-1 font-thai text-xs"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </span>
-          ))}
-        </div>
-      )}
+                  Slide {i + 1}
+                  <button
+                    type="button"
+                    onClick={() => removeContextSlide(i)}
+                    className="rounded-full p-0.5 hover:bg-winitch-200 dark:hover:bg-winitch-800 text-current"
+                    aria-label={`เอา Slide ${i + 1} ออกจาก context`}
+                  >
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
 
-      {/* Input — shadcn Input + Button */}
-      <form
-        onSubmit={handleSubmit}
-        className="flex-shrink-0 p-4 border-t border-border bg-card"
-      >
-        <div className="flex gap-2 rounded-md border border-input bg-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-background overflow-hidden">
-          <Input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="ต้องการปรับปรุงอะไร?"
-            disabled={isThinking}
-            className="flex-1 min-w-0 border-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 font-thai"
-            aria-label="Prompt สำหรับ AI"
-          />
-          <Button
-            type="submit"
-            variant="ghost"
-            size="sm"
-            disabled={!input.trim() || isThinking}
-            className="font-thai text-primary hover:bg-primary/10 shrink-0"
-            aria-label="ส่ง prompt"
-          >
-            ส่ง
-          </Button>
-        </div>
-      </form>
+          <div className="flex gap-2 rounded-md border border-input bg-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-background overflow-hidden">
+            <Input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={
+                isDragOverInput
+                  ? 'วาง slide ที่นี่เพื่อเพิ่ม context...'
+                  : 'ต้องการปรับปรุงอะไร?'
+              }
+              disabled={isThinking}
+              className="flex-1 min-w-0 border-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 font-thai"
+              aria-label="Prompt สำหรับ AI"
+            />
+            <Button
+              type="submit"
+              variant="ghost"
+              size="sm"
+              disabled={!input.trim() || isThinking}
+              className="font-thai text-primary hover:bg-primary/10 shrink-0"
+              aria-label="ส่ง prompt"
+            >
+              ส่ง
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
