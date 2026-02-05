@@ -20,7 +20,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const isActive = (path: string) => location.pathname === path
+  const isActive = (path: string) => {
+    const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+    const normalizedPath = (
+      path === '/' ? base || '/' : `${base}${path}`
+    ).replace(/\/$/, '')
+    const currentPath = location.pathname.replace(/\/$/, '') || '/'
+    return currentPath === normalizedPath
+  }
 
   return (
     <div className="flex h-screen w-full bg-slate-50/50 dark:bg-[#020617]">
