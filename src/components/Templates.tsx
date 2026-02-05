@@ -148,7 +148,7 @@ export function TemplatesPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-thai font-bold text-3xl text-slate-900 dark:text-slate-100 tracking-tight">
-              Templates
+              เทมเพลต (Templates)
             </h1>
             <p className="font-thai text-slate-500 dark:text-slate-400 mt-1">
               จัดการและรวบรวมเทมเพลตสำหรับงานนำเสนอของคุณ
@@ -334,7 +334,7 @@ export function TemplatesPage() {
           {/* Create New Template Card (Optional shortcut) */}
           <div
             onClick={() => setIsDialogOpen(true)}
-            className="group cursor-pointer relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-transparent p-6 hover:border-winitch-500 hover:bg-winitch-50/50 dark:hover:border-winitch-500/50 dark:hover:bg-winitch-950/20 transition-all duration-200 h-[280px]"
+            className="group cursor-pointer relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-transparent p-6 hover:border-winitch-500 hover:bg-winitch-50/50 dark:hover:border-winitch-500/50 dark:hover:bg-winitch-950/20 transition-all duration-200 min-h-[280px]"
           >
             <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 group-hover:bg-winitch-100 dark:group-hover:bg-winitch-900/50 transition-colors">
               <Plus className="h-8 w-8 text-slate-400 group-hover:text-winitch-600 dark:group-hover:text-winitch-400" />
@@ -347,7 +347,7 @@ export function TemplatesPage() {
           {templates.map((template) => (
             <Card
               key={template.id}
-              className="group relative overflow-hidden hover:shadow-lg transition-all duration-200 h-[280px] flex flex-col"
+              className="group relative overflow-hidden hover:shadow-lg transition-all duration-200 min-h-[280px] flex flex-col"
             >
               <div
                 className={cn(
@@ -377,7 +377,7 @@ export function TemplatesPage() {
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
                     <div>
-                      <span className="inline-block px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-500 mb-2 font-thai">
+                      <span className="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-500 mb-2 font-thai">
                         {template.category}
                       </span>
                     </div>
@@ -390,10 +390,10 @@ export function TemplatesPage() {
                     </Button>
                   </div>
 
-                  <h3 className="font-thai font-bold text-base text-slate-900 dark:text-white line-clamp-1 mb-1">
+                  <h3 className="font-thai font-bold text-base text-slate-900 dark:text-white line-clamp-2 mb-1 leading-snug">
                     {template.title}
                   </h3>
-                  <p className="font-thai text-xs text-slate-500 dark:text-slate-400 line-clamp-2">
+                  <p className="font-thai text-xs text-slate-500 dark:text-slate-400 line-clamp-3 leading-relaxed">
                     {template.description}
                   </p>
                 </div>

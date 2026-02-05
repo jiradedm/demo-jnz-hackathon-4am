@@ -59,18 +59,11 @@ export function Home() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-slate-900 dark:text-white font-thai">
-              Recent Decks
+              My Deck
             </h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 font-thai">
               จัดการและติดตามสถานะงานนำเสนอของคุณ
             </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <select className="h-9 rounded-md border border-slate-200 bg-transparent px-3 py-1 text-sm shadow-sm font-thai dark:border-slate-800 dark:text-slate-300">
-              <option>All Status</option>
-              <option>Active</option>
-              <option>Draft</option>
-            </select>
           </div>
         </div>
 
