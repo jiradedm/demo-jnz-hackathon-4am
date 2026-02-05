@@ -21,12 +21,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const location = useLocation()
 
   const isActive = (path: string) => {
-    const base = import.meta.env.BASE_URL.replace(/\/$/, '')
-    const normalizedPath = (
-      path === '/' ? base || '/' : `${base}${path}`
-    ).replace(/\/$/, '')
     const currentPath = location.pathname.replace(/\/$/, '') || '/'
-    return currentPath === normalizedPath
+    const targetPath = path.replace(/\/$/, '') || '/'
+    return currentPath === targetPath
   }
 
   return (

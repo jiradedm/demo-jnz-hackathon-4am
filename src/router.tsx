@@ -1,4 +1,5 @@
 import {
+  createHashHistory,
   createRootRoute,
   createRoute,
   createRouter,
@@ -86,7 +87,7 @@ const routeTree = rootRoute.addChildren([
 // Create the router instance
 export const router = createRouter({
   routeTree,
-  basepath: import.meta.env.BASE_URL,
+  history: createHashHistory(),
 })
 
 // Register the router instance for type safety
